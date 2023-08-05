@@ -6,9 +6,11 @@ mongoose.connect('mongodb://localhost:27017/clase21_test')
 
 const assert = Assert.strict
 
-describe('Testing GET method of User DAO', () => {
+describe('ASSERT Testing GET method of User DAO', () => {
     before(async function() {
-        await mongoose.connection.collections.users.drop()
+        try {
+            await mongoose.connection.collections.users.drop()
+        } catch(err) {}
         this.userDao = new User()
     })
     it('El GET debe devolver un arreglo', async function() {
@@ -23,6 +25,9 @@ describe('Testing GET method of User DAO', () => {
 
 describe('Testing SAVE method of User DAO', () => {
     before(async function() {
+        try {
+            await mongoose.connection.collections.users.drop()
+        } catch(err) {}
         this.userDao = new User()
     })
     it('El DAO debe poder crear usuarios', async function() {
@@ -38,6 +43,9 @@ describe('Testing SAVE method of User DAO', () => {
 
 describe('Testing GETBY method of User DAO', () => {
     before(async function() {
+        try {
+            await mongoose.connection.collections.users.drop()
+        } catch(err) {}
         this.userDao = new User()
     })
     it('El DAO debe poder buscar por email', async function() {
@@ -50,5 +58,10 @@ describe('Testing GETBY method of User DAO', () => {
         const user = await this.userDao.getBy({ email: 'alexmarinmendez@gmail.com'})
 
         assert.strictEqual(typeof user, 'object')
+    })
+    after(async function() {
+        try {
+            await mongoose.connection.collections.users.drop()
+        } catch(err) {}
     })
 })
